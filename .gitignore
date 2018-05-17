@@ -1,0 +1,5 @@
+.idea/
+.python-version
+build/
+dist/
+mandrill.egg-info/

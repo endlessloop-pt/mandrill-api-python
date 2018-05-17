@@ -9,6 +9,10 @@ except ImportError:
 
 class Error(Exception):
     pass
+class BadResponseError(Error):
+    def __init__(self, message, response_body):
+        super(BadResponseError, self).__init__(message)
+        self.response_body = response_body
 class ValidationError(Error):
     pass
 class InvalidKeyError(Error):
@@ -167,7 +171,14 @@ class Mandrill(object):
         self.log('Received %s in %.2fms: %s' % (r.status_code, complete_time * 1000, r.text))
         self.last_request = {'url': url, 'request_body': params, 'response_body': r.text, 'remote_addr': remote_addr, 'response': r, 'time': complete_time}
 
-        result = json.loads(response_body)
+        try:
+            result = json.loads(response_body)
+        except Exception:
+            raise BadResponseError(
+                'Mandrill received a {} HTTP code,'
+                ' and a non JSON response body.'.format(r.status_code),
+                response_body
+            )
 
         if r.status_code != requests.codes.ok:
             raise self.cast_error(result)
