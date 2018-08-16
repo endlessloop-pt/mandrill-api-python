@@ -13,7 +13,7 @@ setup(
     url='https://bitbucket.org/mailchimp/mandrill-api-python/',
     scripts=['scripts/mandrill', 'scripts/sendmail.mandrill'],
     py_modules=['mandrill'],
-    install_requires=['requests >= 0.13.2', 'docopt == 0.6.1', 'urllib3 < 1.23'],
+    install_requires=['requests >= 0.13.2', 'docopt == 0.6.1'],
     classifiers=[
         'Development Status :: 7 - Inactive',
         'Environment :: Console',
