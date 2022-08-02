@@ -1,11 +1,6 @@
 import requests, os.path, logging, sys, time
-try:
-    import ujson as json
-except ImportError:
-    try:
-        import simplejson as json
-    except ImportError:
-        import json
+import ujson as json
+
 
 class Error(Exception):
     pass
@@ -157,7 +152,7 @@ class Mandrill(object):
         '''Actually make the API call with the given params - this should only be called by the namespace methods - use the helpers in regular usage like m.tags.list()'''
         if params is None: params = {}
         params['key'] = self.apikey
-        params = json.dumps(params)
+        params = json.dumps(params, reject_bytes=False)
         self.log('POST to %s%s.json: %s' % (ROOT, url, params))
         start = time.time()
         r = self.session.post('%s%s.json' % (ROOT, url), data=params, headers={'content-type': 'application/json', 'user-agent': 'Mandrill-Python/1.0.59'})
